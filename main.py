@@ -9,7 +9,7 @@ engine.setProperty('rate', 150)
 
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[0].id)
-engine.say("Hello im your voices assistant Zara")
+engine.say("zdravei az sam tvoqt glasov asistent Zara")
 engine.runAndWait()
 engine.stop()
 
@@ -18,6 +18,11 @@ def listen():
     r = sr.Recognizer()
     with sr.Microphone() as sourse:
         print("Кажете команда")
+
+        engine = pyttsx3.init()
+        engine.say("kak da pomogna")
+        engine.runAndWait()
+
 
         audio = r.listen(sourse)
         try:
