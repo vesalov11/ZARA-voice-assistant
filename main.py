@@ -4,6 +4,8 @@ import webbrowser
 import pyaudio
 import datetime
 import wikipedia as wikipedia
+import time
+import os
 
 # Глас
 engine = pyttsx3.init()
@@ -108,16 +110,25 @@ def hangle_message(message):
             engine.say(f"chasat e  {time_str}")
             engine.runAndWait()
 
+        elif 'изключи' in message:
+            time_left = 5
+            while time_left > 0:
+                print(f"shutting down in {time_left} seconds...")
+                time_left -= 1
+                time.sleep(1)
+            os.system("shutdown /s /t 1")
 
-def кой():
-    wikipedia.set_lang('bg')
-    page = wikipedia.page()
 
-    # Use text-to-speech to read out the summary of the article
-    summary = wikipedia.summary(sentences=2)
-    print(summary)
-    engine.say(summary)
-    engine.runAndWait()
+
+
+   #     elif'кой' in message:
+    #     wikipedia.set_lang('bg')
+     #   page = wikipedia.page()
+
+      #     summary = wikipedia.summary(sentences=2)
+       #   print(summary)
+        #   engine.say(summary)
+         #    engine.runAndWait()
 
 
 if __name__ == 'main':
