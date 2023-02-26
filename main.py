@@ -14,6 +14,8 @@ engine.setProperty('rate', 150)
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[0].id)
 engine.say("Hello im your voices assistant Zara")
+engine.say("kak moga da pomogna")
+
 engine.runAndWait()
 engine.stop()
 
