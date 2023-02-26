@@ -3,28 +3,33 @@ import speech_recognition as sr
 import webbrowser
 import pyaudio
 import datetime
+import wikipediaapi
 import wikipedia as wikipedia
 import time
 import os
+import requests
+from bs4 import BeautifulSoup
 
-"""Глас """
+# Глас
 engine = pyttsx3.init()
-engine.setProperty('rate', 150)
-
+engine.setProperty('rate', 135)
+engine.setProperty('voice', 'bulgarian')
 voices = engine.getProperty('voices')
-engine.setProperty('voice', voices[0].id)
-engine.say("Hello im your voices assistant Zara")
-engine.say("kak moga da pomogna")
+engine.setProperty('voice', voices[1].id)
+engine.say("hi im your voices asisstent Zara")
+engine.say("kak da pomogna")
 
 engine.runAndWait()
 engine.stop()
 
 
+# Взимаме аудиото
 def listen():
     r = sr.Recognizer()
     with sr.Microphone() as sourse:
         print("Кажете команда")
-
+        engine = pyttsx3.init()
+        engine.runAndWait()
         audio = r.listen(sourse)
         try:
             speech = r.recognize_google(audio, language='bg')
@@ -36,11 +41,15 @@ def listen():
             return "error"
 
 
+# Функции
 def hangle_message(message):
     message = message.lower()
     if "зара" in message:
         if "чао" in message:
+
             exit()
+
+
         elif "youtube" in message:
             print('стартитаме you tube')
             webbrowser.open_new_tab('https://www.youtube.com')
@@ -112,6 +121,34 @@ def hangle_message(message):
                 time_left -= 1
                 time.sleep(1)
             os.system("shutdown /s /t 1")
+
+
+        elif 'кой' in message:
+            engine = pyttsx3.init()
+
+            r = sr.Recognizer()
+
+            language = 'bg-BG'
+            with sr.Microphone() as source:
+                print("Speak now...")
+                audio = r.listen(source)
+            try:
+                search_term = r.recognize_google(audio, language=language)
+                print("Searching for: " + search_term)
+
+                wikipedia.set_lang('bg')
+                page = wikipedia.page(search_term)
+
+                summary = wikipedia.summary(search_term, sentences=2)
+                print(summary)
+                engine.say(summary)
+                engine.runAndWait()
+
+            except sr.UnknownValueError:
+                print("Sorry, I didn't understand that.")
+            except sr.RequestError as e:
+                print("Could not request results from Google Speech Recognition service; {0}".format(e))
+
 if __name__ == '__main__':
     print('test')
     while True:
