@@ -124,16 +124,7 @@ def hangle_message(message):
                 time.sleep(1)
             os.system("shutdown /s /t 1")
 
-        elif 'какво' in message:
 
-            api_key = "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"
-            url = f"https://api.openweathermap.org/data/2.5/weather?q={new yourk}&appid={api_key}"
-            response = requests.get(url)
-            data = json.loads(response.text)
-            temperature = round(data["main"]["temp"] - 273.15, 2)
-            description = data["weather"][0]["description"]
-            engine.say(f"The temperature in {city} is {temperature} degrees Celsius with {description}")
-            engine.runAndWait()
         elif 'кой' in message:
             engine = pyttsx3.init()
 
