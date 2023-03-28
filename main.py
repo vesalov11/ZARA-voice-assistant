@@ -7,6 +7,8 @@ import wikipediaapi
 import wikipedia as wikipedia
 import time
 import os
+import json
+
 import requests
 from bs4 import BeautifulSoup
 
@@ -51,7 +53,7 @@ def hangle_message(message):
 
 
         elif "youtube" in message:
-            print('стартитаме you tube')
+            print('стартитаме  YouTube')
             webbrowser.open_new_tab('https://www.youtube.com')
             engine = pyttsx3.init()
             engine.say("startiram YouTube")
@@ -122,12 +124,20 @@ def hangle_message(message):
                 time.sleep(1)
             os.system("shutdown /s /t 1")
 
+        elif 'какво' in message:
 
+            api_key = "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"
+            url = f"https://api.openweathermap.org/data/2.5/weather?q={new yourk}&appid={api_key}"
+            response = requests.get(url)
+            data = json.loads(response.text)
+            temperature = round(data["main"]["temp"] - 273.15, 2)
+            description = data["weather"][0]["description"]
+            engine.say(f"The temperature in {city} is {temperature} degrees Celsius with {description}")
+            engine.runAndWait()
         elif 'кой' in message:
             engine = pyttsx3.init()
 
             r = sr.Recognizer()
-
             language = 'bg-BG'
             with sr.Microphone() as source:
                 print("Speak now...")
