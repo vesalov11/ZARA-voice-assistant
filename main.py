@@ -1,16 +1,8 @@
 import pyttsx3
 import speech_recognition as sr
 import webbrowser
-import pyaudio
 import datetime
-import wikipediaapi
-import wikipedia as wikipedia
-import time
-import os
-import json
 
-import requests
-from bs4 import BeautifulSoup
 
 # Глас
 engine = pyttsx3.init()
@@ -42,15 +34,43 @@ def listen():
         except sr.RequestError:
             return "error"
 
+def engine_talk(text):
+ engine.say(text)
+ engine.runAndWait()
+
+
 
 # Функции
-def hangle_message(message):
+def hangle_message(message, engine=None):
     message = message.lower()
+
+
     if "зара" in message:
         if "чао" in message:
-
+            print("довиждане, приятен ден!!")
             exit()
+        elif 'коя си ти' in command:
+            print('Аз съм гласов асистент зара')
 
+        elif "Благодаря" in message:
+            print("Пак заповядай")
+
+
+        elif "здравей" in message:
+            print("Здравей как мога да бъда полезна?")
+
+        elif "салих" in command:#страницата на салх
+            url = "http://192.168.99.222/"
+            webbrowser.get().open(url)
+
+
+
+        elif "къде се намирам" in command:
+            url = "https://www.google.com/maps/search/Where+am+I+?/"
+            webbrowser.get().open(url)
+
+        elif "кой те е създал" in command or "кой те е направил" in command:
+            print("Аз съм направена от ученик на ПГЕЕ гр. Банско, който се казва Мехмед Весалов")
 
         elif "youtube" in message:
             print('стартитаме  YouTube')
@@ -106,6 +126,7 @@ def hangle_message(message):
             engine = pyttsx3.init()
             now = datetime.datetime.now()
             date_str = now.strftime("%A, %B %d, %Y")
+            print('Днешната дата е:   '+ date_str)
             engine.say(f"dnes sme {date_str}")
             engine.runAndWait()
 
@@ -113,42 +134,29 @@ def hangle_message(message):
             engine = pyttsx3.init()
             now = datetime.datetime.now()
             time_str = now.strftime("%I:%M %p")
+            print('chasat e'+ time_str)
             engine.say(f"chasat e  {time_str}")
             engine.runAndWait()
 
-        elif 'изключи' in message:
-            time_left = 5
-            while time_left > 0:
-                print(f"shutting down in {time_left} seconds...")
-                time_left -= 1
-                time.sleep(1)
-            os.system("shutdown /s /t 1")
+        elif 'Часът' in command:
+            time = datetime.datetime.now().strftime('%I:%M %p')
+            print('The current time is' + time)
+            engine_talk('The current time is')
+            engine_talk(time)
 
 
-        elif 'кой' in message:
-            engine = pyttsx3.init()
+        elif 'кой' in command:
+            search = 'https://bg.wikipedia.org/wiki/%D0%9D%D0%B0%D1%87%D0%B0%D0%BB%D0%BD%D0%B0_%D1%81%D1%82%D1%80%D0%B0%D0%BD%D0%B8%D1%86%D0%B0' + command
+            engine_talk('резултат от търсенето')
+            webbrowser.open(search)
 
-            r = sr.Recognizer()
-            language = 'bg-BG'
-            with sr.Microphone() as source:
-                print("Speak now...")
-                audio = r.listen(source)
-            try:
-                search_term = r.recognize_google(audio, language=language)
-                print("Searching for: " + search_term)
+        elif "търси" in command or "потърси" in command:
 
-                wikipedia.set_lang('bg')
-                page = wikipedia.page(search_term)
 
-                summary = wikipedia.summary(search_term, sentences=2)
-                print(summary)
-                engine.say(summary)
-                engine.runAndWait()
-
-            except sr.UnknownValueError:
-                print("Sorry, I didn't understand that.")
-            except sr.RequestError as e:
-                print("Could not request results from Google Speech Recognition service; {0}".format(e))
+         if "как" in command:
+            search = 'https://www.google.com/search?q=' + command
+            engine_talk('tarsene')
+            webbrowser.open(search)
 
 if __name__ == '__main__':
     print('test')
