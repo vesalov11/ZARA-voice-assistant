@@ -2,7 +2,8 @@ import pyttsx3
 import speech_recognition as sr
 import webbrowser
 import datetime
-
+import os
+from wikipedia import wikipedia
 
 # Глас
 engine = pyttsx3.init()
@@ -150,10 +151,20 @@ def hangle_message(message, engine=None):
             engine_talk('резултат от търсенето')
             webbrowser.open(search)
 
+            ###     ###     ###     ###     ###     ###
+            if 'wikipedia' in message:
+                query = message.replace("wikipedia", "")
+                results = wikipedia.summary(query, sentences=3)
+
+        elif 'play music' in message or "play song" in message:
+                music_dir = "C:\\Users\\GAURAV\\Music"
+                songs = os.listdir(music_dir)
+                print(songs)
+                random = os.startfile(os.path.join(music_dir, songs[1]))
+                ###     ###     ###     ###     ###     ###
+
         elif "търси" in command or "потърси" in command:
-
-
-         if "как" in command:
+           if "как" in command:
             search = 'https://www.google.com/search?q=' + command
             engine_talk('tarsene')
             webbrowser.open(search)
