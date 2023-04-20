@@ -4,15 +4,14 @@ import webbrowser
 import datetime
 import os
 from wikipedia import wikipedia
-
+import time
 # Глас
 engine = pyttsx3.init()
 engine.setProperty('rate', 135)
 engine.setProperty('voice', 'bulgarian')
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[1].id)
-engine.say("hi im your voices asisstent Zara")
-engine.say("kak da pomogna")
+
 
 engine.runAndWait()
 engine.stop()
@@ -168,6 +167,14 @@ def hangle_message(message, engine=None):
             search = 'https://www.google.com/search?q=' + command
             engine_talk('tarsene')
             webbrowser.open(search)
+
+        elif 'изключи' in message:
+            time_left = 5
+            while time_left > 0:
+                print(f"shutting down in {time_left} seconds...")
+                time_left -= 1
+                time.sleep(1)
+            os.system("shutdown /s /t 1")
 
 if __name__ == '__main__':
     print('test')
