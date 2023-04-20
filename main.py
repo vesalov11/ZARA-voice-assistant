@@ -1,17 +1,18 @@
+import time
+import ec as ec
 import pyttsx3
 import speech_recognition as sr
-import webbrowser
 import datetime
+import webbrowser
 import os
-from wikipedia import wikipedia
-import time
+from ecapture import ecapture as ec
+
 # Глас
 engine = pyttsx3.init()
 engine.setProperty('rate', 135)
 engine.setProperty('voice', 'bulgarian')
 voices = engine.getProperty('voices')
 engine.setProperty('voice', voices[1].id)
-
 
 engine.runAndWait()
 engine.stop()
@@ -49,28 +50,26 @@ def hangle_message(message, engine=None):
         if "чао" in message:
             print("довиждане, приятен ден!!")
             exit()
-        elif 'коя си ти' in command:
+
+        elif 'коя си ти' in message:
             print('Аз съм гласов асистент зара')
 
-        elif "Благодаря" in message:
+        elif "благодаря" in message:
             print("Пак заповядай")
 
 
         elif "здравей" in message:
             print("Здравей как мога да бъда полезна?")
 
-        elif "салих" in command:#страницата на салх
-            url = "http://192.168.99.222/"
-            webbrowser.get().open(url)
+        elif "кой те е създал" in message or "кой те е направил" in message:
+            print("Аз съм направена от ученик на ПГЕЕ гр. Банско, който се казва Мехмед Весалов")
 
-
+################################################
 
         elif "къде се намирам" in command:
             url = "https://www.google.com/maps/search/Where+am+I+?/"
             webbrowser.get().open(url)
 
-        elif "кой те е създал" in command or "кой те е направил" in command:
-            print("Аз съм направена от ученик на ПГЕЕ гр. Банско, който се казва Мехмед Весалов")
 
         elif "youtube" in message:
             print('стартитаме  YouTube')
@@ -127,7 +126,6 @@ def hangle_message(message, engine=None):
             now = datetime.datetime.now()
             date_str = now.strftime("%A, %B %d, %Y")
             print('Днешната дата е:   '+ date_str)
-            engine.say(f"dnes sme {date_str}")
             engine.runAndWait()
 
         elif 'часът' in message:
@@ -135,14 +133,34 @@ def hangle_message(message, engine=None):
             now = datetime.datetime.now()
             time_str = now.strftime("%I:%M %p")
             print('chasat e'+ time_str)
-            engine.say(f"chasat e  {time_str}")
             engine.runAndWait()
 
-        elif 'Часът' in command:
-            time = datetime.datetime.now().strftime('%I:%M %p')
-            print('The current time is' + time)
-            engine_talk('The current time is')
-            engine_talk(time)
+
+        elif "снимка" in message or "направи снимка" in message:
+            ec.capture(0, "Jarvis Camera ", "img.jpg")
+
+
+
+        elif 'пусни' in message or "пуснеш" in message:
+            music_dir = "C:\\Users\\ИсуфМВесалов\\Music"
+
+            songs = os.listdir(music_dir)
+            print(songs)
+            random = os.startfile(os.path.join(music_dir, songs[1]))
+
+
+        elif 'изключи' in message:
+            time_left = 2
+            while time_left > 0:
+                print(f"shutting down in {time_left} seconds...")
+                time_left -= 1
+                time.sleep(1)
+            os.system("shutdown /s /t 1")
+
+
+
+
+  ################################################################################################
 
 
         elif 'кой' in command:
@@ -150,33 +168,14 @@ def hangle_message(message, engine=None):
             engine_talk('резултат от търсенето')
             webbrowser.open(search)
 
-            ###     ###     ###     ###     ###     ###
-            if 'wikipedia' in message:
-                query = message.replace("wikipedia", "")
-                results = wikipedia.summary(query, sentences=3)
-
-        elif 'play music' in message or "play song" in message:
-                music_dir = "C:\\Users\\GAURAV\\Music"
-                songs = os.listdir(music_dir)
-                print(songs)
-                random = os.startfile(os.path.join(music_dir, songs[1]))
-                ###     ###     ###     ###     ###     ###
-
         elif "търси" in command or "потърси" in command:
            if "как" in command:
             search = 'https://www.google.com/search?q=' + command
             engine_talk('tarsene')
             webbrowser.open(search)
 
-        elif 'изключи' in message:
-            time_left = 5
-            while time_left > 0:
-                print(f"shutting down in {time_left} seconds...")
-                time_left -= 1
-                time.sleep(1)
-            os.system("shutdown /s /t 1")
 
-if __name__ == '__main__':
+if name == 'main':
     print('test')
     while True:
         command = listen()
